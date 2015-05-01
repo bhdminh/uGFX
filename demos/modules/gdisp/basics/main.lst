@@ -1,0 +1,302 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.startup.main,"ax",@progbits
+  12               	.global	main
+  14               	main:
+  15               	.LFB7:
+  16               		.file 1 "../../uGFX/demos/modules/gdisp/basics/main.c"
+   1:../../uGFX/demos/modules/gdisp/basics/main.c **** /*
+   2:../../uGFX/demos/modules/gdisp/basics/main.c ****  * Copyright (c) 2012, 2013, Joel Bodenmann aka Tectu <joel@unormal.org>
+   3:../../uGFX/demos/modules/gdisp/basics/main.c ****  * Copyright (c) 2012, 2013, Andrew Hannam aka inmarket
+   4:../../uGFX/demos/modules/gdisp/basics/main.c ****  *
+   5:../../uGFX/demos/modules/gdisp/basics/main.c ****  * All rights reserved.
+   6:../../uGFX/demos/modules/gdisp/basics/main.c ****  *
+   7:../../uGFX/demos/modules/gdisp/basics/main.c ****  * Redistribution and use in source and binary forms, with or without
+   8:../../uGFX/demos/modules/gdisp/basics/main.c ****  * modification, are permitted provided that the following conditions are met:
+   9:../../uGFX/demos/modules/gdisp/basics/main.c ****  *    * Redistributions of source code must retain the above copyright
+  10:../../uGFX/demos/modules/gdisp/basics/main.c ****  *      notice, this list of conditions and the following disclaimer.
+  11:../../uGFX/demos/modules/gdisp/basics/main.c ****  *    * Redistributions in binary form must reproduce the above copyright
+  12:../../uGFX/demos/modules/gdisp/basics/main.c ****  *      notice, this list of conditions and the following disclaimer in the
+  13:../../uGFX/demos/modules/gdisp/basics/main.c ****  *      documentation and/or other materials provided with the distribution.
+  14:../../uGFX/demos/modules/gdisp/basics/main.c ****  *    * Neither the name of the <organization> nor the
+  15:../../uGFX/demos/modules/gdisp/basics/main.c ****  *      names of its contributors may be used to endorse or promote products
+  16:../../uGFX/demos/modules/gdisp/basics/main.c ****  *      derived from this software without specific prior written permission.
+  17:../../uGFX/demos/modules/gdisp/basics/main.c ****  *
+  18:../../uGFX/demos/modules/gdisp/basics/main.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  19:../../uGFX/demos/modules/gdisp/basics/main.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  20:../../uGFX/demos/modules/gdisp/basics/main.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  21:../../uGFX/demos/modules/gdisp/basics/main.c ****  * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+  22:../../uGFX/demos/modules/gdisp/basics/main.c ****  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  23:../../uGFX/demos/modules/gdisp/basics/main.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  24:../../uGFX/demos/modules/gdisp/basics/main.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  25:../../uGFX/demos/modules/gdisp/basics/main.c ****  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  26:../../uGFX/demos/modules/gdisp/basics/main.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  27:../../uGFX/demos/modules/gdisp/basics/main.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  28:../../uGFX/demos/modules/gdisp/basics/main.c ****  */
+  29:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  30:../../uGFX/demos/modules/gdisp/basics/main.c **** #include "gfx.h"
+  31:../../uGFX/demos/modules/gdisp/basics/main.c **** //#include "ch.h"
+  32:../../uGFX/demos/modules/gdisp/basics/main.c **** //#include "hal.h"
+  33:../../uGFX/demos/modules/gdisp/basics/main.c **** //#include "test.h"
+  34:../../uGFX/demos/modules/gdisp/basics/main.c **** //
+  35:../../uGFX/demos/modules/gdisp/basics/main.c **** //static WORKING_AREA(waThread1, 32);
+  36:../../uGFX/demos/modules/gdisp/basics/main.c **** //static msg_t Thread1(void *arg) {
+  37:../../uGFX/demos/modules/gdisp/basics/main.c **** //
+  38:../../uGFX/demos/modules/gdisp/basics/main.c **** //  while (TRUE) {
+  39:../../uGFX/demos/modules/gdisp/basics/main.c **** //    palTogglePad(IOPORT2, PORTB_LED1);
+  40:../../uGFX/demos/modules/gdisp/basics/main.c **** //    chThdSleepMilliseconds(1000);
+  41:../../uGFX/demos/modules/gdisp/basics/main.c **** //  }
+  42:../../uGFX/demos/modules/gdisp/basics/main.c **** //  return 0;
+  43:../../uGFX/demos/modules/gdisp/basics/main.c **** //}
+  44:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  45:../../uGFX/demos/modules/gdisp/basics/main.c **** int main(void) {
+  17               		.loc 1 45 0
+  18               		.cfi_startproc
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  46:../../uGFX/demos/modules/gdisp/basics/main.c **** 	coord_t		width, height;
+  47:../../uGFX/demos/modules/gdisp/basics/main.c **** 	coord_t		i, j;
+  48:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  49:../../uGFX/demos/modules/gdisp/basics/main.c ****     // Initialize and clear the display
+  50:../../uGFX/demos/modules/gdisp/basics/main.c ****     gfxInit();
+  23               		.loc 1 50 0
+  24 0000 0E94 0000 		call gfxInit
+  25               	.LVL0:
+  51:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  52:../../uGFX/demos/modules/gdisp/basics/main.c ****     gdispSetOrientation(GDISP_ROTATE_180);
+  26               		.loc 1 52 0
+  27 0004 44EB      		ldi r20,lo8(-76)
+  28 0006 50E0      		ldi r21,0
+  29 0008 61E0      		ldi r22,lo8(1)
+  30 000a 70E0      		ldi r23,0
+  31 000c 8091 0000 		lds r24,GDISP
+  32 0010 9091 0000 		lds r25,GDISP+1
+  33 0014 0E94 0000 		call gdispGControl
+  34               	.LVL1:
+  53:../../uGFX/demos/modules/gdisp/basics/main.c ****     gdispClear(White);
+  35               		.loc 1 53 0
+  36 0018 6FEF      		ldi r22,lo8(-1)
+  37 001a 7FEF      		ldi r23,lo8(-1)
+  38 001c 8091 0000 		lds r24,GDISP
+  39 0020 9091 0000 		lds r25,GDISP+1
+  40 0024 0E94 0000 		call gdispGClear
+  41               	.LVL2:
+  54:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  55:../../uGFX/demos/modules/gdisp/basics/main.c ****     // Get the screen size
+  56:../../uGFX/demos/modules/gdisp/basics/main.c ****     width = gdispGetWidth();
+  42               		.loc 1 56 0
+  43 0028 8091 0000 		lds r24,GDISP
+  44 002c 9091 0000 		lds r25,GDISP+1
+  45 0030 0E94 0000 		call gdispGGetWidth
+  46               	.LVL3:
+  47 0034 EC01      		movw r28,r24
+  48               	.LVL4:
+  57:../../uGFX/demos/modules/gdisp/basics/main.c ****     height = gdispGetHeight();
+  49               		.loc 1 57 0
+  50 0036 8091 0000 		lds r24,GDISP
+  51 003a 9091 0000 		lds r25,GDISP+1
+  52               	.LVL5:
+  53 003e 0E94 0000 		call gdispGGetHeight
+  54               	.LVL6:
+  55 0042 6C01      		movw r12,r24
+  56               	.LVL7:
+  58:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  59:../../uGFX/demos/modules/gdisp/basics/main.c ****     // Code Here
+  60:../../uGFX/demos/modules/gdisp/basics/main.c **** 	gdispDrawBox(10, 10, width/2, height/2, Yellow);
+  57               		.loc 1 60 0
+  58 0044 4C01      		movw r8,r24
+  59 0046 97FD      		sbrc r25,7
+  60 0048 00C0      		rjmp .L9
+  61               	.L2:
+  62 004a 9594      		asr r9
+  63 004c 8794      		ror r8
+  64 004e 5E01      		movw r10,r28
+  65 0050 D7FD      		sbrc r29,7
+  66 0052 00C0      		rjmp .L10
+  67               	.L3:
+  68 0054 B594      		asr r11
+  69 0056 A794      		ror r10
+  70 0058 20EE      		ldi r18,lo8(-32)
+  71 005a E22E      		mov r14,r18
+  72 005c FF24      		clr r15
+  73 005e FA94      		dec r15
+  74 0060 8401      		movw r16,r8
+  75 0062 9501      		movw r18,r10
+  76 0064 4AE0      		ldi r20,lo8(10)
+  77 0066 50E0      		ldi r21,0
+  78 0068 6AE0      		ldi r22,lo8(10)
+  79 006a 70E0      		ldi r23,0
+  80 006c 8091 0000 		lds r24,GDISP
+  81 0070 9091 0000 		lds r25,GDISP+1
+  82 0074 0E94 0000 		call gdispGDrawBox
+  83               	.LVL8:
+  61:../../uGFX/demos/modules/gdisp/basics/main.c ****     gdispFillArea(width/2, height/2, width/2-10, height/2-10, Blue);
+  84               		.loc 1 61 0
+  85 0078 0A50      		subi r16,10
+  86 007a 1109      		sbc r17,__zero_reg__
+  87 007c 9501      		movw r18,r10
+  88 007e 2A50      		subi r18,10
+  89 0080 3109      		sbc r19,__zero_reg__
+  90 0082 4FE1      		ldi r20,lo8(31)
+  91 0084 E42E      		mov r14,r20
+  92 0086 F12C      		mov r15,__zero_reg__
+  93 0088 A401      		movw r20,r8
+  94 008a B501      		movw r22,r10
+  95 008c 8091 0000 		lds r24,GDISP
+  96 0090 9091 0000 		lds r25,GDISP+1
+  97 0094 0E94 0000 		call gdispGFillArea
+  98               	.LVL9:
+  62:../../uGFX/demos/modules/gdisp/basics/main.c ****     gdispDrawLine(5, 30, width-50, height-40, Red);
+  99               		.loc 1 62 0
+ 100 0098 E12C      		mov r14,__zero_reg__
+ 101 009a 58EF      		ldi r21,lo8(-8)
+ 102 009c F52E      		mov r15,r21
+ 103 009e 8601      		movw r16,r12
+ 104 00a0 0852      		subi r16,40
+ 105 00a2 1109      		sbc r17,__zero_reg__
+ 106 00a4 9E01      		movw r18,r28
+ 107 00a6 2253      		subi r18,50
+ 108 00a8 3109      		sbc r19,__zero_reg__
+ 109 00aa 4EE1      		ldi r20,lo8(30)
+ 110 00ac 50E0      		ldi r21,0
+ 111 00ae 65E0      		ldi r22,lo8(5)
+ 112 00b0 70E0      		ldi r23,0
+ 113 00b2 8091 0000 		lds r24,GDISP
+ 114 00b6 9091 0000 		lds r25,GDISP+1
+ 115 00ba 0E94 0000 		call gdispGDrawLine
+ 116               	.LVL10:
+  63:../../uGFX/demos/modules/gdisp/basics/main.c ****     
+  64:../../uGFX/demos/modules/gdisp/basics/main.c **** 	for(i = 5, j = 0; i < width && j < height; i += 7, j += i/20)
+ 117               		.loc 1 64 0
+ 118 00be C630      		cpi r28,6
+ 119 00c0 D105      		cpc r29,__zero_reg__
+ 120 00c2 04F0      		brlt .L5
+ 121 00c4 1C14      		cp __zero_reg__,r12
+ 122 00c6 1D04      		cpc __zero_reg__,r13
+ 123 00c8 04F4      		brge .L5
+ 124 00ca E12C      		mov r14,__zero_reg__
+ 125 00cc F12C      		mov r15,__zero_reg__
+ 126 00ce 05E0      		ldi r16,lo8(5)
+ 127 00d0 10E0      		ldi r17,0
+ 128 00d2 84E1      		ldi r24,lo8(20)
+ 129 00d4 A82E      		mov r10,r24
+ 130 00d6 B12C      		mov r11,__zero_reg__
+ 131 00d8 00C0      		rjmp .L7
+ 132               	.LVL11:
+ 133               	.L11:
+ 134               		.loc 1 64 0 is_stmt 0 discriminator 2
+ 135 00da EC14      		cp r14,r12
+ 136 00dc FD04      		cpc r15,r13
+ 137 00de 04F4      		brge .L5
+ 138               	.LVL12:
+ 139               	.L7:
+  65:../../uGFX/demos/modules/gdisp/basics/main.c ****     	gdispDrawPixel(i, j, Red);
+ 140               		.loc 1 65 0 is_stmt 1 discriminator 1
+ 141 00e0 20E0      		ldi r18,0
+ 142 00e2 38EF      		ldi r19,lo8(-8)
+ 143 00e4 A701      		movw r20,r14
+ 144 00e6 B801      		movw r22,r16
+ 145 00e8 8091 0000 		lds r24,GDISP
+ 146 00ec 9091 0000 		lds r25,GDISP+1
+ 147 00f0 0E94 0000 		call gdispGDrawPixel
+ 148               	.LVL13:
+  64:../../uGFX/demos/modules/gdisp/basics/main.c **** 	for(i = 5, j = 0; i < width && j < height; i += 7, j += i/20)
+ 149               		.loc 1 64 0 discriminator 1
+ 150 00f4 095F      		subi r16,-7
+ 151 00f6 1F4F      		sbci r17,-1
+ 152               	.LVL14:
+ 153 00f8 C801      		movw r24,r16
+ 154 00fa B501      		movw r22,r10
+ 155 00fc 0E94 0000 		call __divmodhi4
+ 156 0100 E60E      		add r14,r22
+ 157 0102 F71E      		adc r15,r23
+ 158               	.LVL15:
+ 159 0104 0C17      		cp r16,r28
+ 160 0106 1D07      		cpc r17,r29
+ 161 0108 04F0      		brlt .L11
+ 162               	.LVL16:
+ 163               	.L5:
+  66:../../uGFX/demos/modules/gdisp/basics/main.c **** 
+  67:../../uGFX/demos/modules/gdisp/basics/main.c **** //	/*
+  68:../../uGFX/demos/modules/gdisp/basics/main.c **** //	 * Activates the serial driver 1 using the driver default configuration.
+  69:../../uGFX/demos/modules/gdisp/basics/main.c **** //	 */
+  70:../../uGFX/demos/modules/gdisp/basics/main.c **** //	palClearPad(IOPORT2, PORTB_LED1);
+  71:../../uGFX/demos/modules/gdisp/basics/main.c **** //	sdStart(&SD1, NULL);
+  72:../../uGFX/demos/modules/gdisp/basics/main.c **** //
+  73:../../uGFX/demos/modules/gdisp/basics/main.c **** //	/*
+  74:../../uGFX/demos/modules/gdisp/basics/main.c **** //	 * Starts the LED blinker thread.
+  75:../../uGFX/demos/modules/gdisp/basics/main.c **** //	 */
+  76:../../uGFX/demos/modules/gdisp/basics/main.c **** //	chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+  77:../../uGFX/demos/modules/gdisp/basics/main.c **** //
+  78:../../uGFX/demos/modules/gdisp/basics/main.c **** //	TestThread(&SD1);
+  79:../../uGFX/demos/modules/gdisp/basics/main.c ****     while(TRUE) {
+  80:../../uGFX/demos/modules/gdisp/basics/main.c ****     	gfxSleepMilliseconds(500);
+ 164               		.loc 1 80 0 discriminator 1
+ 165 010a 84EF      		ldi r24,lo8(-12)
+ 166 010c 91E0      		ldi r25,lo8(1)
+ 167 010e 0E94 0000 		call gfxSleepMilliseconds
+ 168               	.LVL17:
+ 169 0112 84EF      		ldi r24,lo8(-12)
+ 170 0114 91E0      		ldi r25,lo8(1)
+ 171 0116 0E94 0000 		call gfxSleepMilliseconds
+ 172               	.LVL18:
+ 173 011a 00C0      		rjmp .L5
+ 174               	.LVL19:
+ 175               	.L10:
+  60:../../uGFX/demos/modules/gdisp/basics/main.c **** 	gdispDrawBox(10, 10, width/2, height/2, Yellow);
+ 176               		.loc 1 60 0
+ 177 011c 8FEF      		ldi r24,-1
+ 178 011e A81A      		sub r10,r24
+ 179 0120 B80A      		sbc r11,r24
+ 180               	.LVL20:
+ 181 0122 00C0      		rjmp .L3
+ 182               	.LVL21:
+ 183               	.L9:
+ 184 0124 8FEF      		ldi r24,-1
+ 185 0126 881A      		sub r8,r24
+ 186 0128 980A      		sbc r9,r24
+ 187               	.LVL22:
+ 188 012a 00C0      		rjmp .L2
+ 189               		.cfi_endproc
+ 190               	.LFE7:
+ 192               		.text
+ 193               	.Letext0:
+ 194               		.file 2 "/cygdrive/c/Program Files/WinAVR/avr/include/stdint.h"
+ 195               		.file 3 "../../ChibiOS_2.6.8/os/ports/GCC/AVR/chtypes.h"
+ 196               		.file 4 "../../uGFX/src/gos/gos_chibios.h"
+ 197               		.file 5 "../../uGFX/src/gdisp/sys_defs.h"
+ 198               		.file 6 "../../uGFX/src/gdisp/gdisp_colors.h"
+ 199               		.file 7 "../../uGFX/gfx.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:2      *ABS*:0000003e __SP_H__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:3      *ABS*:0000003d __SP_L__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:4      *ABS*:0000003f __SREG__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:5      *ABS*:0000003b __RAMPZ__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:6      *ABS*:00000000 __tmp_reg__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:7      *ABS*:00000001 __zero_reg__
+/cygdrive/c/Users/BHDMinh/AppData/Local/Temp/ccZzUug9.s:14     .text.startup.main:00000000 main
+
+UNDEFINED SYMBOLS
+gfxInit
+GDISP
+gdispGControl
+gdispGClear
+gdispGGetWidth
+gdispGGetHeight
+gdispGDrawBox
+gdispGFillArea
+gdispGDrawLine
+gdispGDrawPixel
+__divmodhi4
+gfxSleepMilliseconds

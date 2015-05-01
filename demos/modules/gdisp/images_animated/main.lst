@@ -1,0 +1,414 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.rodata.str1.1,"aMS",@progbits,1
+  12               	.LC0:
+  13 0000 7262 00   		.string	"rb"
+  14               	.LC1:
+  15 0003 7465 7374 		.string	"testanim.gif"
+  15      616E 696D 
+  15      2E67 6966 
+  15      00
+  16               		.section	.text.startup,"ax",@progbits
+  17               	.global	main
+  19               	main:
+  20               	.LFB7:
+  21               		.file 1 "../../uGFX/demos/modules/gdisp/images_animated/main.c"
+   1:../../uGFX/demos/modules/gdisp/images_animated/main.c **** /*
+   2:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Copyright (c) 2012, 2013, Joel Bodenmann aka Tectu <joel@unormal.org>
+   3:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Copyright (c) 2012, 2013, Andrew Hannam aka inmarket
+   4:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *
+   5:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * All rights reserved.
+   6:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *
+   7:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Redistribution and use in source and binary forms, with or without
+   8:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * modification, are permitted provided that the following conditions are met:
+   9:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *    * Redistributions of source code must retain the above copyright
+  10:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *      notice, this list of conditions and the following disclaimer.
+  11:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *    * Redistributions in binary form must reproduce the above copyright
+  12:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *      notice, this list of conditions and the following disclaimer in the
+  13:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *      documentation and/or other materials provided with the distribution.
+  14:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *    * Neither the name of the <organization> nor the
+  15:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *      names of its contributors may be used to endorse or promote products
+  16:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *      derived from this software without specific prior written permission.
+  17:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *
+  18:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  19:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  20:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  21:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+  22:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  23:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  24:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  25:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  26:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  27:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  28:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  */
+  29:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  30:../../uGFX/demos/modules/gdisp/images_animated/main.c **** #include "gfx.h"
+  31:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  32:../../uGFX/demos/modules/gdisp/images_animated/main.c **** /**
+  33:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * The image file must be stored on a GFILE file-system.
+  34:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Use either GFILE_NEED_NATIVEFS or GFILE_NEED_ROMFS (or both).
+  35:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  *
+  36:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * The ROMFS uses the file "romfs_files.h" to describe the set of files in the ROMFS.
+  37:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  */
+  38:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  39:../../uGFX/demos/modules/gdisp/images_animated/main.c **** #define USE_IMAGE_CACHE			FALSE						// Only if you want to get performance at the expense of RAM
+  40:../../uGFX/demos/modules/gdisp/images_animated/main.c **** #define MY_BG_COLOR				RGB2COLOR(220, 220, 255)	// Pale blue so we can see the transparent parts
+  41:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  42:../../uGFX/demos/modules/gdisp/images_animated/main.c **** static gdispImage myImage;
+  43:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  44:../../uGFX/demos/modules/gdisp/images_animated/main.c **** #define SHOW_ERROR(color)		gdispFillArea(errx, erry, errcx, errcy, color)
+  45:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  46:../../uGFX/demos/modules/gdisp/images_animated/main.c **** /**
+  47:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * This demo display the animated gif (either directly from a file or from a
+  48:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * file encoded in flash.
+  49:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * To show the various stages of encoding it displays a colored bar down the
+  50:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * right hand side of the display to indicate what is happenning.
+  51:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Green	- Image has completed and is displayed correctly
+  52:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Red		- A really bad image fault. We couldn't open the image
+  53:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Yellow	- Waiting to decode the next animation frame
+  54:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  * Orange	- Decoding a frame has produced an error.
+  55:../../uGFX/demos/modules/gdisp/images_animated/main.c ****  */
+  56:../../uGFX/demos/modules/gdisp/images_animated/main.c **** int main(void) {
+  22               		.loc 1 56 0
+  23               		.cfi_startproc
+  24               	/* prologue: function */
+  25               	/* frame size = 0 */
+  26               	/* stack size = 0 */
+  27               	.L__stack_usage = 0
+  57:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	coord_t			swidth, sheight, errx, erry, errcx, errcy;
+  58:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	delaytime_t		delay;
+  59:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  60:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	gfxInit();		// Initialize the display
+  28               		.loc 1 60 0
+  29 0000 0E94 0000 		call gfxInit
+  30               	.LVL0:
+  61:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  62:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	gdispClear(MY_BG_COLOR);
+  31               		.loc 1 62 0
+  32 0004 6FEF      		ldi r22,lo8(-1)
+  33 0006 7EED      		ldi r23,lo8(-34)
+  34 0008 8091 0000 		lds r24,GDISP
+  35 000c 9091 0000 		lds r25,GDISP+1
+  36 0010 0E94 0000 		call gdispGClear
+  37               	.LVL1:
+  63:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  64:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	// Get the display dimensions
+  65:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	swidth = gdispGetWidth();
+  38               		.loc 1 65 0
+  39 0014 8091 0000 		lds r24,GDISP
+  40 0018 9091 0000 		lds r25,GDISP+1
+  41 001c 0E94 0000 		call gdispGGetWidth
+  42               	.LVL2:
+  43 0020 3C01      		movw r6,r24
+  44               	.LVL3:
+  66:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	sheight = gdispGetHeight();
+  45               		.loc 1 66 0
+  46 0022 8091 0000 		lds r24,GDISP
+  47 0026 9091 0000 		lds r25,GDISP+1
+  48 002a 0E94 0000 		call gdispGGetHeight
+  49               	.LVL4:
+  50 002e EC01      		movw r28,r24
+  51               	.LVL5:
+  67:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  68:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	// Work out our error indicator area
+  69:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	errx = swidth-10;
+  52               		.loc 1 69 0
+  53 0030 4301      		movw r8,r6
+  54 0032 4AE0      		ldi r20,10
+  55 0034 841A      		sub r8,r20
+  56 0036 9108      		sbc r9,__zero_reg__
+  57               	.LVL6:
+  70:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	erry = 0;
+  71:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	errcx = 10;
+  72:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	errcy = sheight;
+  73:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  74:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	// Set up IO for our image
+  75:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	if (!(gdispImageOpenFile(&myImage, "testanim.gif") & GDISP_IMAGE_ERR_UNRECOVERABLE)) {
+  58               		.loc 1 75 0
+  59 0038 60E0      		ldi r22,lo8(.LC0)
+  60 003a 70E0      		ldi r23,hi8(.LC0)
+  61 003c 80E0      		ldi r24,lo8(.LC1)
+  62 003e 90E0      		ldi r25,hi8(.LC1)
+  63               	.LVL7:
+  64 0040 0E94 0000 		call gfileOpen
+  65               	.LVL8:
+  66 0044 BC01      		movw r22,r24
+  67 0046 80E0      		ldi r24,lo8(myImage)
+  68 0048 90E0      		ldi r25,hi8(myImage)
+  69 004a 0E94 0000 		call gdispImageOpenGFile
+  70               	.LVL9:
+  71 004e 97FD      		sbrc r25,7
+  72 0050 00C0      		rjmp .L2
+  76:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+  77:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		gdispImageSetBgColor(&myImage, MY_BG_COLOR);
+  73               		.loc 1 77 0
+  74 0052 6FEF      		ldi r22,lo8(-1)
+  75 0054 7EED      		ldi r23,lo8(-34)
+  76 0056 80E0      		ldi r24,lo8(myImage)
+  77 0058 90E0      		ldi r25,hi8(myImage)
+  78 005a 0E94 0000 		call gdispImageSetBgColor
+  79               	.LVL10:
+  78:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		// Adjust the error indicator area if necessary
+  79:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		if (myImage.width > errx && myImage.height < sheight) {
+  80               		.loc 1 79 0
+  81 005e 2091 0000 		lds r18,myImage+6
+  82 0062 3091 0000 		lds r19,myImage+6+1
+  83 0066 8216      		cp r8,r18
+  84 0068 9306      		cpc r9,r19
+  85 006a 04F0      		brlt .+2
+  86 006c 00C0      		rjmp .L18
+  87               		.loc 1 79 0 is_stmt 0 discriminator 1
+  88 006e 8091 0000 		lds r24,myImage+8
+  89 0072 9091 0000 		lds r25,myImage+8+1
+  90 0076 8C17      		cp r24,r28
+  91 0078 9D07      		cpc r25,r29
+  92 007a 04F0      		brlt .+2
+  93 007c 00C0      		rjmp .L14
+  94               	.LVL11:
+  80:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			errx = 0; erry = sheight-10;
+  95               		.loc 1 80 0 is_stmt 1
+  96 007e 2E01      		movw r4,r28
+  97 0080 4AE0      		ldi r20,10
+  98 0082 441A      		sub r4,r20
+  99 0084 5108      		sbc r5,__zero_reg__
+ 100               	.LVL12:
+ 101 0086 7C01      		movw r14,r24
+  81:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			errcx = swidth; errcy = 10;
+ 102               		.loc 1 81 0
+ 103 0088 CAE0      		ldi r28,lo8(10)
+ 104 008a D0E0      		ldi r29,0
+ 105               	.LVL13:
+  80:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			errx = 0; erry = sheight-10;
+ 106               		.loc 1 80 0
+ 107 008c 812C      		mov r8,__zero_reg__
+ 108 008e 912C      		mov r9,__zero_reg__
+ 109               	.LVL14:
+ 110               	.L4:
+  79:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		if (myImage.width > errx && myImage.height < sheight) {
+ 111               		.loc 1 79 0
+ 112 0090 8901      		movw r16,r18
+ 113 0092 00C0      		rjmp .L9
+ 114               	.LVL15:
+ 115               	.L5:
+  82:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		}
+  83:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		while(1) {
+  84:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			#if USE_IMAGE_CACHE
+  85:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				gdispImageCache(&myImage);
+  86:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			#endif
+  87:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			if (gdispImageDraw(&myImage, 0, 0, myImage.width, myImage.height, 0, 0) != GDISP_IMAGE_ERR_OK) {
+  88:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				SHOW_ERROR(Orange);
+  89:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				break;
+  90:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			}
+  91:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			delay = gdispImageNext(&myImage);
+ 116               		.loc 1 91 0
+ 117 0094 80E0      		ldi r24,lo8(myImage)
+ 118 0096 90E0      		ldi r25,hi8(myImage)
+ 119 0098 0E94 0000 		call gdispImageNext
+ 120               	.LVL16:
+ 121 009c 6C01      		movw r12,r24
+ 122               	.LVL17:
+  92:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			if (delay == TIME_INFINITE) {
+ 123               		.loc 1 92 0
+ 124 009e 8FEF      		ldi r24,-1
+ 125 00a0 C816      		cp r12,r24
+ 126 00a2 D806      		cpc r13,r24
+ 127 00a4 01F4      		brne .+2
+ 128 00a6 00C0      		rjmp .L19
+  93:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				SHOW_ERROR(Green);
+  94:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				break;
+  95:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			}
+  96:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			SHOW_ERROR(Yellow);
+ 129               		.loc 1 96 0
+ 130 00a8 90EE      		ldi r25,lo8(-32)
+ 131 00aa E92E      		mov r14,r25
+ 132 00ac FF24      		clr r15
+ 133 00ae FA94      		dec r15
+ 134 00b0 8E01      		movw r16,r28
+ 135 00b2 9301      		movw r18,r6
+ 136 00b4 A201      		movw r20,r4
+ 137 00b6 B401      		movw r22,r8
+ 138 00b8 8091 0000 		lds r24,GDISP
+ 139 00bc 9091 0000 		lds r25,GDISP+1
+ 140 00c0 0E94 0000 		call gdispGFillArea
+ 141               	.LVL18:
+  97:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			if (delay != TIME_IMMEDIATE)
+ 142               		.loc 1 97 0
+ 143 00c4 C114      		cp r12,__zero_reg__
+ 144 00c6 D104      		cpc r13,__zero_reg__
+ 145 00c8 01F0      		breq .+2
+ 146 00ca 00C0      		rjmp .L8
+ 147               	.LVL19:
+ 148               	.L15:
+ 149 00cc E090 0000 		lds r14,myImage+8
+ 150 00d0 F090 0000 		lds r15,myImage+9
+ 151 00d4 0091 0000 		lds r16,myImage+6
+ 152               	.LVL20:
+ 153 00d8 1091 0000 		lds r17,myImage+7
+ 154               	.LVL21:
+ 155               	.L9:
+  87:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 			if (gdispImageDraw(&myImage, 0, 0, myImage.width, myImage.height, 0, 0) != GDISP_IMAGE_ERR_OK) {
+ 156               		.loc 1 87 0
+ 157 00dc A12C      		mov r10,__zero_reg__
+ 158 00de B12C      		mov r11,__zero_reg__
+ 159 00e0 C12C      		mov r12,__zero_reg__
+ 160 00e2 D12C      		mov r13,__zero_reg__
+ 161 00e4 20E0      		ldi r18,0
+ 162 00e6 30E0      		ldi r19,0
+ 163 00e8 40E0      		ldi r20,0
+ 164 00ea 50E0      		ldi r21,0
+ 165 00ec 60E0      		ldi r22,lo8(myImage)
+ 166 00ee 70E0      		ldi r23,hi8(myImage)
+ 167 00f0 8091 0000 		lds r24,GDISP
+ 168 00f4 9091 0000 		lds r25,GDISP+1
+ 169 00f8 0E94 0000 		call gdispGImageDraw
+ 170               	.LVL22:
+ 171 00fc 892B      		or r24,r25
+ 172 00fe 01F0      		breq .L5
+  88:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				SHOW_ERROR(Orange);
+ 173               		.loc 1 88 0
+ 174 0100 30E2      		ldi r19,lo8(32)
+ 175 0102 E32E      		mov r14,r19
+ 176 0104 3DEF      		ldi r19,lo8(-3)
+ 177 0106 F32E      		mov r15,r19
+ 178 0108 00C0      		rjmp .L16
+ 179               	.LVL23:
+ 180               	.L18:
+ 181 010a E090 0000 		lds r14,myImage+8
+ 182 010e F090 0000 		lds r15,myImage+9
+  71:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	errcx = 10;
+ 183               		.loc 1 71 0
+ 184 0112 5AE0      		ldi r21,lo8(10)
+ 185 0114 652E      		mov r6,r21
+ 186 0116 712C      		mov r7,__zero_reg__
+ 187               	.LVL24:
+  70:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	erry = 0;
+ 188               		.loc 1 70 0
+ 189 0118 412C      		mov r4,__zero_reg__
+ 190 011a 512C      		mov r5,__zero_reg__
+ 191 011c 00C0      		rjmp .L4
+ 192               	.LVL25:
+ 193               	.L2:
+  98:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				gfxSleepMilliseconds(delay);
+  99:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		}
+ 100:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		gdispImageClose(&myImage);
+ 101:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	} else
+ 102:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		SHOW_ERROR(Red);
+ 194               		.loc 1 102 0
+ 195 011e E12C      		mov r14,__zero_reg__
+ 196 0120 88EF      		ldi r24,lo8(-8)
+ 197 0122 F82E      		mov r15,r24
+ 198 0124 8E01      		movw r16,r28
+ 199 0126 2AE0      		ldi r18,lo8(10)
+ 200 0128 30E0      		ldi r19,0
+ 201 012a 40E0      		ldi r20,0
+ 202 012c 50E0      		ldi r21,0
+ 203 012e B401      		movw r22,r8
+ 204 0130 8091 0000 		lds r24,GDISP
+ 205 0134 9091 0000 		lds r25,GDISP+1
+ 206 0138 0E94 0000 		call gdispGFillArea
+ 207               	.LVL26:
+ 208               	.L11:
+ 103:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 
+ 104:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	while(1) {
+ 105:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		gfxSleepMilliseconds(1000);
+ 209               		.loc 1 105 0 discriminator 1
+ 210 013c 88EE      		ldi r24,lo8(-24)
+ 211 013e 93E0      		ldi r25,lo8(3)
+ 212 0140 0E94 0000 		call gfxSleepMilliseconds
+ 213               	.LVL27:
+ 214 0144 00C0      		rjmp .L11
+ 215               	.LVL28:
+ 216               	.L14:
+ 217 0146 7C01      		movw r14,r24
+  71:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	errcx = 10;
+ 218               		.loc 1 71 0
+ 219 0148 4AE0      		ldi r20,lo8(10)
+ 220 014a 642E      		mov r6,r20
+ 221 014c 712C      		mov r7,__zero_reg__
+ 222               	.LVL29:
+  70:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 	erry = 0;
+ 223               		.loc 1 70 0
+ 224 014e 412C      		mov r4,__zero_reg__
+ 225 0150 512C      		mov r5,__zero_reg__
+ 226 0152 00C0      		rjmp .L4
+ 227               	.LVL30:
+ 228               	.L8:
+  98:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				gfxSleepMilliseconds(delay);
+ 229               		.loc 1 98 0
+ 230 0154 C601      		movw r24,r12
+ 231 0156 0E94 0000 		call gfxSleepMilliseconds
+ 232               	.LVL31:
+ 233 015a 00C0      		rjmp .L15
+ 234               	.LVL32:
+ 235               	.L19:
+  93:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 				SHOW_ERROR(Green);
+ 236               		.loc 1 93 0
+ 237 015c E12C      		mov r14,__zero_reg__
+ 238 015e 24E0      		ldi r18,lo8(4)
+ 239 0160 F22E      		mov r15,r18
+ 240               	.LVL33:
+ 241               	.L16:
+ 242 0162 8E01      		movw r16,r28
+ 243 0164 9301      		movw r18,r6
+ 244 0166 A201      		movw r20,r4
+ 245 0168 B401      		movw r22,r8
+ 246 016a 8091 0000 		lds r24,GDISP
+ 247 016e 9091 0000 		lds r25,GDISP+1
+ 248 0172 0E94 0000 		call gdispGFillArea
+ 249               	.LVL34:
+ 100:../../uGFX/demos/modules/gdisp/images_animated/main.c **** 		gdispImageClose(&myImage);
+ 250               		.loc 1 100 0
+ 251 0176 80E0      		ldi r24,lo8(myImage)
+ 252 0178 90E0      		ldi r25,hi8(myImage)
+ 253 017a 0E94 0000 		call gdispImageClose
+ 254               	.LVL35:
+ 255 017e 00C0      		rjmp .L11
+ 256               		.cfi_endproc
+ 257               	.LFE7:
+ 259               		.local	myImage
+ 260               		.comm	myImage,16,1
+ 261               		.text
+ 262               	.Letext0:
+ 263               		.file 2 "c:\\program files\\winavr\\avr\\include\\stdint.h"
+ 264               		.file 3 "../../ChibiOS_2.6.8/os/ports/GCC/AVR/chtypes.h"
+ 265               		.file 4 "../../uGFX/src/gos/gos_chibios.h"
+ 266               		.file 5 "../../uGFX/src/gfile/sys_defs.h"
+ 267               		.file 6 "../../uGFX/src/gdisp/sys_defs.h"
+ 268               		.file 7 "../../uGFX/src/gdisp/gdisp_colors.h"
+ 269               		.file 8 "../../uGFX/src/gdisp/gdisp_image.h"
+ 270               		.file 9 "../../uGFX/gfx.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:2      *ABS*:0000003e __SP_H__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:3      *ABS*:0000003d __SP_L__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:4      *ABS*:0000003f __SREG__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:5      *ABS*:0000003b __RAMPZ__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\BHDMinh\AppData\Local\Temp\cc7pGc7V.s:19     .text.startup:00000000 main
+                             .bss:00000000 myImage
+
+UNDEFINED SYMBOLS
+gfxInit
+GDISP
+gdispGClear
+gdispGGetWidth
+gdispGGetHeight
+gfileOpen
+gdispImageOpenGFile
+gdispImageSetBgColor
+gdispImageNext
+gdispGFillArea
+gdispGImageDraw
+gfxSleepMilliseconds
+gdispImageClose
+__do_copy_data
+__do_clear_bss
